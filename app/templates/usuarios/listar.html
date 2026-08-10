@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Usuários{% endblock %}
+{% block content %}
+    <h1>Usuários cadastrados</h1>
+    <a class="btn" href="{{ url_for('usuarios.novo') }}">+ Novo usuário</a>
+    <table>
+        <thead><tr><th>Nome</th><th>E-mail</th><th>Cadastrado em</th><th></th></tr></thead>
+        <tbody>
+        {% for u in usuarios %}
+            <tr>
+                <td>{{ u.nome }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.data_cadastro.strftime('%d/%m/%Y') }}</td>
+                <td><a href="{{ url_for('usuarios.perfil', usuario_id=u.id) }}">ver perfil</a></td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">Nenhum usuário cadastrado ainda.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

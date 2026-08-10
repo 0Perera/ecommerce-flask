@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ anuncio.titulo }}{% endblock %}
+{% block content %}
+    <h1>{{ anuncio.titulo }}</h1>
+    <p class="price" style="font-size:1.4rem">R$ {{ "%.2f"|format(anuncio.preco) }}</p>
+    <span class="badge badge-{{ anuncio.status }}">{{ anuncio.status }}</span>
+    <span class="badge">{{ anuncio.categoria.nome }}</span>
+    <p>{{ anuncio.descricao }}</p>
+    <p>Vendedor: <a href="{{ url_for('usuarios.perfil', usuario_id=anuncio.anunciante.id) }}">{{ anuncio.anunciante.nome }}</a></p>
+
+    {% if usuario_atual_id and usuario_atual_id != anuncio.usuario_id and anuncio.status == 'ativo' %}
+        <form method="POST" action="{{ url_for('compras.nova') }}">
+            <input type="hidden" name="anuncio_id" value="{{ anuncio.id }}">
+            <button type="submit">Comprar agora</button>
+        </form>
+    {% endif %}
+
+    {% if usuario_atual_id %}
+        <div class="card">
+            <h3>Adicionar aos favoritos</h3>
+            {% if minhas_listas %}
+                {% for l in minhas_listas %}
+                    <form method="POST" action="{{ url_for('favoritos.adicionar_item', lista_id=l.id) }}" style="display:inline-block; margin-right:8px;">
+                        <input type="hidden" name="anuncio_id" value="{{ anuncio.id }}">
+                        <button type="submit" class="secondary">+ {{ l.nome }}</button>
+                    </form>
+                {% endfor %}
+            {% else %}
+                <p>Você ainda não tem listas de favoritos. <a href="{{ url_for('favoritos.nova') }}">Criar uma lista</a>.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <h2>Perguntas</h2>
+    {% for p in anuncio.perguntas %}
+        <div class="card">
+            <p><strong>{{ p.autor.nome }}:</strong> {{ p.texto }}</p>
+            {% if p.resposta %}
+                <p><strong>Resposta do vendedor:</strong> {{ p.resposta.texto }}</p>
+            {% elif usuario_atual_id == anuncio.usuario_id %}
+                <form method="POST" action="{{ url_for('perguntas.responder', pergunta_id=p.id) }}">
+                    <textarea name="texto" placeholder="Escreva sua resposta" required></textarea>
+                    <button type="submit" class="secondary">Responder</button>
+                </form>
+            {% else %}
+                <p><em>Aguardando resposta do vendedor.</em></p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Nenhuma pergunta ainda.</p>
+    {% endfor %}
+
+    {% if usuario_atual_id and usuario_atual_id != anuncio.usuario_id %}
+        <h3>Fazer uma pergunta</h3>
+        <form method="POST" action="{{ url_for('perguntas.nova') }}">
+            <input type="hidden" name="anuncio_id" value="{{ anuncio.id }}">
+            <textarea name="texto" placeholder="Digite sua pergunta" required></textarea>
+            <button type="submit">Perguntar</button>
+        </form>
+    {% endif %}
+{% endblock %}

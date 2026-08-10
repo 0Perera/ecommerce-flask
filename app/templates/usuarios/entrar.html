@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Entrar{% endblock %}
+{% block content %}
+    <h1>Selecionar usuário atual</h1>
+    <p>Etapa inicial do projeto: escolha um usuário cadastrado para simular a sessão de navegação.</p>
+    <form method="POST">
+        <label for="usuario_id">Usuário</label>
+        <select id="usuario_id" name="usuario_id" required>
+            {% for u in usuarios %}
+                <option value="{{ u.id }}">{{ u.nome }} ({{ u.email }})</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Entrar</button>
+    </form>
+    {% if not usuarios %}
+        <p>Nenhum usuário cadastrado ainda. <a href="{{ url_for('usuarios.novo') }}">Criar o primeiro usuário</a>.</p>
+    {% endif %}
+{% endblock %}

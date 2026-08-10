@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-commerce{% endblock %} | Plataforma</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="brand" href="{{ url_for('main.home') }}">🛒 MinhaLoja</a>
+        <nav>
+            <a href="{{ url_for('main.home') }}">Início</a>
+            <a href="{{ url_for('anuncios.listar') }}">Anúncios</a>
+            <a href="{{ url_for('categorias.listar') }}">Categorias</a>
+            <a href="{{ url_for('anuncios.novo') }}">Anunciar</a>
+            <a href="{{ url_for('favoritos.listar') }}">Favoritos</a>
+
+            {% if session.get('usuario_id') %}
+                <a href="{{ url_for('usuarios.perfil', usuario_id=session['usuario_id']) }}">Meu perfil</a>
+                <a href="{{ url_for('usuarios.relatorio_compras', usuario_id=session['usuario_id']) }}">Minhas compras</a>
+                <a href="{{ url_for('usuarios.relatorio_vendas', usuario_id=session['usuario_id']) }}">Minhas vendas</a>
+                <a href="{{ url_for('usuarios.entrar') }}">Trocar usuário</a>
+            {% else %}
+                <a href="{{ url_for('usuarios.entrar') }}">Entrar</a>
+                <a href="{{ url_for('usuarios.novo') }}">Cadastrar-se</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="flash flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>Projeto acadêmico &mdash; Plataforma de E-commerce (Flask)</p>
+    </footer>
+</body>
+</html>

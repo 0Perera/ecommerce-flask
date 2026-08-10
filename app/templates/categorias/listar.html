@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Categorias{% endblock %}
+{% block content %}
+    <h1>Categorias</h1>
+    <a class="btn" href="{{ url_for('categorias.nova') }}">+ Nova categoria</a>
+    <div class="grid">
+        {% for c in categorias %}
+        <div class="card">
+            <h3><a href="{{ url_for('anuncios.listar', categoria_id=c.id) }}">{{ c.nome }}</a></h3>
+            <p>{{ c.descricao or "" }}</p>
+        </div>
+        {% else %}
+        <p>Nenhuma categoria cadastrada ainda.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

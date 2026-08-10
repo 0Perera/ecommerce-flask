@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Nova lista de favoritos{% endblock %}
+{% block content %}
+    <h1>Nova lista de favoritos</h1>
+    <form method="POST">
+        <label for="nome">Nome da lista</label>
+        <input type="text" id="nome" name="nome" placeholder="Ex: Quero comprar depois" required>
+        <button type="submit">Criar lista</button>
+    </form>
+{% endblock %}

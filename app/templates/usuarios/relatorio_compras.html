@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Relatório de compras{% endblock %}
+{% block content %}
+    <h1>Relatório de compras &mdash; {{ usuario.nome }}</h1>
+    <table>
+        <thead><tr><th>Anúncio</th><th>Vendedor</th><th>Data</th><th>Valor</th></tr></thead>
+        <tbody>
+        {% for c in compras %}
+            <tr>
+                <td>{{ c.anuncio.titulo }}</td>
+                <td>{{ c.anuncio.anunciante.nome }}</td>
+                <td>{{ c.data_compra.strftime('%d/%m/%Y') }}</td>
+                <td>R$ {{ "%.2f"|format(c.valor_pago) }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">Nenhuma compra registrada ainda.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p><strong>Total comprado: R$ {{ "%.2f"|format(total) }}</strong></p>
+{% endblock %}

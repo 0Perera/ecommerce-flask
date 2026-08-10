@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Início{% endblock %}
+{% block content %}
+    <h1>Anúncios em destaque</h1>
+
+    <div class="filter-bar">
+        <a href="{{ url_for('main.home') }}" class="{{ 'active' if not categoria_id else '' }}">Todas categorias</a>
+        {% for c in categorias %}
+            <a href="{{ url_for('main.home', categoria_id=c.id) }}" class="{{ 'active' if categoria_id == c.id else '' }}">{{ c.nome }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="grid">
+        {% for a in anuncios %}
+        <div class="card">
+            <h3><a href="{{ url_for('anuncios.detalhe', anuncio_id=a.id) }}">{{ a.titulo }}</a></h3>
+            <p class="price">R$ {{ "%.2f"|format(a.preco) }}</p>
+            <span class="badge">{{ a.categoria.nome }}</span>
+        </div>
+        {% else %}
+        <p>Nenhum anúncio encontrado nesta categoria.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

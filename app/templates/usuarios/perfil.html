@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ usuario.nome }}{% endblock %}
+{% block content %}
+    <h1>{{ usuario.nome }}</h1>
+    <p>{{ usuario.email }} &middot; cadastrado em {{ usuario.data_cadastro.strftime('%d/%m/%Y') }}</p>
+
+    <h2>Anúncios deste usuário</h2>
+    <div class="grid">
+        {% for a in anuncios %}
+        <div class="card">
+            <h3><a href="{{ url_for('anuncios.detalhe', anuncio_id=a.id) }}">{{ a.titulo }}</a></h3>
+            <p class="price">R$ {{ "%.2f"|format(a.preco) }}</p>
+            <span class="badge badge-{{ a.status }}">{{ a.status }}</span>
+        </div>
+        {% else %}
+        <p>Este usuário ainda não publicou anúncios.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
