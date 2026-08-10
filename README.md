@@ -83,20 +83,3 @@ Acesse **http://localhost:5000**.
 | Lista de favoritos | `/favoritos/nova` | GET/POST | Cria lista |
 | Lista de favoritos | `/favoritos/<id>` | GET | Vê itens da lista |
 | Item favorito | `/favoritos/<lista_id>/adicionar` | POST | Adiciona anúncio à lista |
-
-## Publicando no GitHub
-
-```bash
-cd ecommerce_flask
-git init
-git add .
-git commit -m "Estrutura inicial: MER, menu de navegação e rotas Flask"
-git branch -M main
-git remote add origin https://github.com/SEU_USUARIO/ecommerce-flask.git
-git push -u origin main
-```
-
-Depois de publicar, marque o repositório como **público** em
-Settings → General → Danger Zone (caso ele tenha sido criado como
-privado) e cole o link no enunciado da atividade. A data do primeiro
-commit/push é o que comprova o cumprimento do prazo.
