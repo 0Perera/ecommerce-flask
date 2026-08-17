@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Compras{% endblock %}
+{% block content %}
+    <h1>Compras</h1>
+    <table>
+        <thead><tr><th>Data</th><th>Anúncio</th><th>Comprador</th><th>Valor pago</th><th></th></tr></thead>
+        <tbody>
+        {% for c in compras %}
+            <tr>
+                <td>{{ c.data_compra.strftime('%d/%m/%Y') }}</td>
+                <td><a href="{{ url_for('anuncios.detalhe', anuncio_id=c.anuncio_id) }}">{{ c.anuncio.titulo }}</a></td>
+                <td>{{ c.comprador.nome }}</td>
+                <td>R$ {{ "%.2f"|format(c.valor_pago) }}</td>
+                <td>
+                    {% if session.get('usuario_id') == c.comprador_id %}
+                        <a href="{{ url_for('compras.editar', compra_id=c.id) }}">editar</a>
+                        <a href="{{ url_for('compras.excluir', compra_id=c.id) }}">excluir</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5">Nenhuma compra registrada ainda.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Editar compra{% endblock %}
+{% block content %}
+    <h1>Editar compra</h1>
+    <p>Anúncio: {{ compra.anuncio.titulo }}</p>
+    <form method="POST">
+        <label for="valor_pago">Valor pago (R$)</label>
+        <input type="number" step="0.01" min="0" id="valor_pago" name="valor_pago" value="{{ compra.valor_pago }}" required>
+        <button type="submit">Salvar</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+    <h1>{{ titulo }}</h1>
+    <div class="card">
+        <p>Confirma a exclusão do registro abaixo?</p>
+        <p><strong>{{ registro }}</strong></p>
+        {% if aviso %}<p><em>{{ aviso }}</em></p>{% endif %}
+
+        <form method="POST" action="{{ url_acao }}">
+            <button type="submit">Excluir</button>
+            <a class="btn" href="{{ url_cancelar }}">Cancelar</a>
+        </form>
+    </div>
+{% endblock %}

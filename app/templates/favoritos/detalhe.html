@@ -2,12 +2,20 @@
 {% block title %}{{ lista.nome }}{% endblock %}
 {% block content %}
     <h1>{{ lista.nome }}</h1>
+    <p>
+        <a class="btn" href="{{ url_for('favoritos.editar', lista_id=lista.id) }}">Editar lista</a>
+        <a class="btn" href="{{ url_for('favoritos.excluir', lista_id=lista.id) }}">Excluir lista</a>
+    </p>
     <div class="grid">
         {% for item in lista.itens %}
         <div class="card">
             <h3><a href="{{ url_for('anuncios.detalhe', anuncio_id=item.anuncio.id) }}">{{ item.anuncio.titulo }}</a></h3>
             <p class="price">R$ {{ "%.2f"|format(item.anuncio.preco) }}</p>
             <span class="badge badge-{{ item.anuncio.status }}">{{ item.anuncio.status }}</span>
+            <p>
+                <a href="{{ url_for('favoritos.editar_item', item_id=item.id) }}">mover</a>
+                <a href="{{ url_for('favoritos.excluir_item', item_id=item.id) }}">remover</a>
+            </p>
         </div>
         {% else %}
         <p>Esta lista ainda não tem anúncios favoritados.</p>

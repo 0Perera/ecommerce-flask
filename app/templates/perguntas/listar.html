@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Perguntas{% endblock %}
+{% block content %}
+    <h1>Perguntas</h1>
+    <a class="btn" href="{{ url_for('perguntas.listar_respostas') }}">Ver respostas</a>
+    <table>
+        <thead><tr><th>Pergunta</th><th>Anúncio</th><th>Autor</th><th>Resposta</th><th></th></tr></thead>
+        <tbody>
+        {% for p in perguntas %}
+            <tr>
+                <td>{{ p.texto }}</td>
+                <td><a href="{{ url_for('anuncios.detalhe', anuncio_id=p.anuncio_id) }}">{{ p.anuncio.titulo }}</a></td>
+                <td>{{ p.autor.nome }}</td>
+                <td>{{ "respondida" if p.resposta else "aguardando" }}</td>
+                <td>
+                    {% if session.get('usuario_id') == p.usuario_id %}
+                        <a href="{{ url_for('perguntas.editar', pergunta_id=p.id) }}">editar</a>
+                    {% endif %}
+                    {% if session.get('usuario_id') in [p.usuario_id, p.anuncio.usuario_id] %}
+                        <a href="{{ url_for('perguntas.excluir', pergunta_id=p.id) }}">excluir</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5">Nenhuma pergunta cadastrada ainda.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

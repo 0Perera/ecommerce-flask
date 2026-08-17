@@ -8,6 +8,13 @@
     <p>{{ anuncio.descricao }}</p>
     <p>Vendedor: <a href="{{ url_for('usuarios.perfil', usuario_id=anuncio.anunciante.id) }}">{{ anuncio.anunciante.nome }}</a></p>
 
+    {% if usuario_atual_id == anuncio.usuario_id %}
+        <p>
+            <a class="btn" href="{{ url_for('anuncios.editar', anuncio_id=anuncio.id) }}">Editar anúncio</a>
+            <a class="btn" href="{{ url_for('anuncios.excluir', anuncio_id=anuncio.id) }}">Excluir anúncio</a>
+        </p>
+    {% endif %}
+
     {% if usuario_atual_id and usuario_atual_id != anuncio.usuario_id and anuncio.status == 'ativo' %}
         <form method="POST" action="{{ url_for('compras.nova') }}">
             <input type="hidden" name="anuncio_id" value="{{ anuncio.id }}">
@@ -37,6 +44,12 @@
             <p><strong>{{ p.autor.nome }}:</strong> {{ p.texto }}</p>
             {% if p.resposta %}
                 <p><strong>Resposta do vendedor:</strong> {{ p.resposta.texto }}</p>
+                {% if usuario_atual_id == anuncio.usuario_id %}
+                    <p>
+                        <a href="{{ url_for('perguntas.editar_resposta', resposta_id=p.resposta.id) }}">editar resposta</a>
+                        <a href="{{ url_for('perguntas.excluir_resposta', resposta_id=p.resposta.id) }}">excluir resposta</a>
+                    </p>
+                {% endif %}
             {% elif usuario_atual_id == anuncio.usuario_id %}
                 <form method="POST" action="{{ url_for('perguntas.responder', pergunta_id=p.id) }}">
                     <textarea name="texto" placeholder="Escreva sua resposta" required></textarea>
@@ -45,6 +58,15 @@
             {% else %}
                 <p><em>Aguardando resposta do vendedor.</em></p>
             {% endif %}
+
+            <p>
+                {% if usuario_atual_id == p.usuario_id %}
+                    <a href="{{ url_for('perguntas.editar', pergunta_id=p.id) }}">editar pergunta</a>
+                {% endif %}
+                {% if usuario_atual_id in [p.usuario_id, anuncio.usuario_id] %}
+                    <a href="{{ url_for('perguntas.excluir', pergunta_id=p.id) }}">excluir pergunta</a>
+                {% endif %}
+            </p>
         </div>
     {% else %}
         <p>Nenhuma pergunta ainda.</p>

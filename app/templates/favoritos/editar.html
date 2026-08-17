@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Editar lista{% endblock %}
+{% block content %}
+    <h1>Editar lista de favoritos</h1>
+    <form method="POST">
+        <label for="nome">Nome da lista</label>
+        <input type="text" id="nome" name="nome" value="{{ lista.nome }}" required>
+        <button type="submit">Salvar</button>
+    </form>
+{% endblock %}

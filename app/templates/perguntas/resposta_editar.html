@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Editar resposta{% endblock %}
+{% block content %}
+    <h1>Editar resposta</h1>
+    <p><strong>Pergunta:</strong> {{ resposta.pergunta.texto }}</p>
+    <form method="POST">
+        <label for="texto">Resposta</label>
+        <textarea id="texto" name="texto" rows="3" required>{{ resposta.texto }}</textarea>
+        <button type="submit">Salvar</button>
+    </form>
+{% endblock %}

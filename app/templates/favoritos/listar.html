@@ -8,6 +8,10 @@
         <div class="card">
             <h3><a href="{{ url_for('favoritos.detalhe', lista_id=l.id) }}">{{ l.nome }}</a></h3>
             <p>{{ l.itens|length }} anúncio(s)</p>
+            <p>
+                <a href="{{ url_for('favoritos.editar', lista_id=l.id) }}">editar</a>
+                <a href="{{ url_for('favoritos.excluir', lista_id=l.id) }}">excluir</a>
+            </p>
         </div>
         {% else %}
         <p>Você ainda não criou nenhuma lista de favoritos.</p>

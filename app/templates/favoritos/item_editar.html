@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Mover item{% endblock %}
+{% block content %}
+    <h1>Mover anúncio de lista</h1>
+    <p>Anúncio: {{ item.anuncio.titulo }}</p>
+    <form method="POST">
+        <label for="lista_id">Lista de destino</label>
+        <select id="lista_id" name="lista_id" required>
+            {% for l in listas %}
+                <option value="{{ l.id }}" {% if l.id == item.lista_id %}selected{% endif %}>{{ l.nome }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Salvar</button>
+    </form>
+{% endblock %}

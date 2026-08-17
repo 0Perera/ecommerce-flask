@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Editar categoria{% endblock %}
+{% block content %}
+    <h1>Editar categoria</h1>
+    <form method="POST">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" value="{{ categoria.nome }}" required>
+
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" name="descricao" rows="3">{{ categoria.descricao or "" }}</textarea>
+
+        <button type="submit">Salvar</button>
+    </form>
+{% endblock %}

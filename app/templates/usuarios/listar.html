@@ -11,7 +11,11 @@
                 <td>{{ u.nome }}</td>
                 <td>{{ u.email }}</td>
                 <td>{{ u.data_cadastro.strftime('%d/%m/%Y') }}</td>
-                <td><a href="{{ url_for('usuarios.perfil', usuario_id=u.id) }}">ver perfil</a></td>
+                <td>
+                    <a href="{{ url_for('usuarios.perfil', usuario_id=u.id) }}">ver perfil</a>
+                    <a href="{{ url_for('usuarios.editar', usuario_id=u.id) }}">editar</a>
+                    <a href="{{ url_for('usuarios.excluir', usuario_id=u.id) }}">excluir</a>
+                </td>
             </tr>
         {% else %}
             <tr><td colspan="4">Nenhum usuário cadastrado ainda.</td></tr>

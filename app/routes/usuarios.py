@@ -82,3 +82,47 @@ def relatorio_compras(usuario_id):
     return render_template(
         "usuarios/relatorio_compras.html", usuario=usuario, compras=compras, total=total
     )
+
+
+@usuarios_bp.route("/<int:usuario_id>/editar", methods=["GET", "POST"])
+def editar(usuario_id):
+    """Edição dos dados de um usuário já cadastrado."""
+    usuario = Usuario.query.get_or_404(usuario_id)
+
+    if request.method == "POST":
+        usuario.nome = request.form["nome"]
+        usuario.email = request.form["email"]
+        senha = request.form.get("senha")
+        if senha:
+            usuario.senha_hash = generate_password_hash(senha)
+        db.session.commit()
+        flash("Usuário atualizado com sucesso!", "success")
+        return redirect(url_for("usuarios.perfil", usuario_id=usuario.id))
+
+    return render_template("usuarios/editar.html", usuario=usuario)
+
+
+@usuarios_bp.route("/<int:usuario_id>/excluir", methods=["GET", "POST"])
+def excluir(usuario_id):
+    """
+    Exclusão em duas etapas: o GET mostra a tela de confirmação e
+    somente o POST remove o registro do banco.
+    """
+    usuario = Usuario.query.get_or_404(usuario_id)
+
+    if request.method == "POST":
+        db.session.delete(usuario)
+        db.session.commit()
+        if session.get("usuario_id") == usuario_id:
+            session.pop("usuario_id")
+        flash("Usuário excluído com sucesso!", "success")
+        return redirect(url_for("usuarios.listar"))
+
+    return render_template(
+        "confirmar_exclusao.html",
+        titulo="Excluir usuário",
+        registro=usuario.nome,
+        aviso="Os anúncios, perguntas, compras e listas de favoritos deste usuário também serão excluídos.",
+        url_acao=url_for("usuarios.excluir", usuario_id=usuario.id),
+        url_cancelar=url_for("usuarios.perfil", usuario_id=usuario.id),
+    )

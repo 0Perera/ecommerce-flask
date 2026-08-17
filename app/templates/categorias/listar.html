@@ -8,6 +8,10 @@
         <div class="card">
             <h3><a href="{{ url_for('anuncios.listar', categoria_id=c.id) }}">{{ c.nome }}</a></h3>
             <p>{{ c.descricao or "" }}</p>
+            <p>
+                <a href="{{ url_for('categorias.editar', categoria_id=c.id) }}">editar</a>
+                <a href="{{ url_for('categorias.excluir', categoria_id=c.id) }}">excluir</a>
+            </p>
         </div>
         {% else %}
         <p>Nenhuma categoria cadastrada ainda.</p>
