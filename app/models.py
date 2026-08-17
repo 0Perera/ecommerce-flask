@@ -21,14 +21,23 @@ class Usuario(db.Model):
 
     # Um usuário pode ter vários anúncios (como anunciante)
     anuncios = db.relationship(
-        "Anuncio", back_populates="anunciante", foreign_keys="Anuncio.usuario_id"
+        "Anuncio",
+        back_populates="anunciante",
+        foreign_keys="Anuncio.usuario_id",
+        cascade="all, delete-orphan",
     )
     # Um usuário pode fazer várias perguntas
-    perguntas = db.relationship("Pergunta", back_populates="autor")
+    perguntas = db.relationship(
+        "Pergunta", back_populates="autor", cascade="all, delete-orphan"
+    )
     # Um usuário pode realizar várias compras
-    compras = db.relationship("Compra", back_populates="comprador")
+    compras = db.relationship(
+        "Compra", back_populates="comprador", cascade="all, delete-orphan"
+    )
     # Um usuário pode criar várias listas de favoritos
-    listas_favoritos = db.relationship("ListaFavoritos", back_populates="usuario")
+    listas_favoritos = db.relationship(
+        "ListaFavoritos", back_populates="usuario", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"<Usuario {self.id} {self.nome}>"
@@ -64,9 +73,15 @@ class Anuncio(db.Model):
         "Usuario", back_populates="anuncios", foreign_keys=[usuario_id]
     )
     categoria = db.relationship("Categoria", back_populates="anuncios")
-    perguntas = db.relationship("Pergunta", back_populates="anuncio")
-    compras = db.relationship("Compra", back_populates="anuncio")
-    itens_favoritos = db.relationship("ItemFavorito", back_populates="anuncio")
+    perguntas = db.relationship(
+        "Pergunta", back_populates="anuncio", cascade="all, delete-orphan"
+    )
+    compras = db.relationship(
+        "Compra", back_populates="anuncio", cascade="all, delete-orphan"
+    )
+    itens_favoritos = db.relationship(
+        "ItemFavorito", back_populates="anuncio", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"<Anuncio {self.id} {self.titulo}>"
@@ -86,7 +101,10 @@ class Pergunta(db.Model):
     autor = db.relationship("Usuario", back_populates="perguntas")
     # 1:1 -> cada pergunta tem no máximo uma resposta
     resposta = db.relationship(
-        "Resposta", back_populates="pergunta", uselist=False
+        "Resposta",
+        back_populates="pergunta",
+        uselist=False,
+        cascade="all, delete-orphan",
     )
 
     def __repr__(self):
@@ -137,7 +155,9 @@ class ListaFavoritos(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=False)
 
     usuario = db.relationship("Usuario", back_populates="listas_favoritos")
-    itens = db.relationship("ItemFavorito", back_populates="lista")
+    itens = db.relationship(
+        "ItemFavorito", back_populates="lista", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"<ListaFavoritos {self.id} {self.nome}>"
